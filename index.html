@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiteMarket V5 - Full Proprietary Ecosystem</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #0f141c; color: #f1f5f9; margin: 0; padding: 20px; }
+        .container { max-width: 750px; margin: 40px auto; background: linear-gradient(145deg, #18202c, #111823); padding: 35px; border-radius: 16px; border: 1px solid #3457dc; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
+        h1 { color: #ffffff; text-align: center; font-size: 28px; margin-bottom: 5px; }
+        h1 span { color: #3457dc; }
+        h2 { color: #b8c6db; font-size: 18px; border-bottom: 1px solid #233044; padding-bottom: 8px; margin-top: 0; }
+        .subtitle { text-align: center; color: #94a3b8; font-size: 14px; margin-bottom: 30px; }
+        .btn { background: linear-gradient(135deg, #3457dc, #1e3bb3); color: white; border: none; padding: 14px; font-size: 15px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(52,87,220,0.3); }
+        .btn:hover { background: linear-gradient(135deg, #4a6cf7, #3457dc); transform: translateY(-1px); }
+        .btn-connect { background: linear-gradient(135deg, #475569, #334155); margin-bottom: 15px; }
+        .btn-mint { background: linear-gradient(135deg, #059669, #10b981); margin-bottom: 5px; }
+        .btn-mint:hover { background: linear-gradient(135deg, #10b981, #34d399); }
+        .btn-burn { background: linear-gradient(135deg, #e43f5a, #b91c1c); }
+        .btn-burn:hover { background: linear-gradient(135deg, #ff536e, #e43f5a); }
+        .section { background: #131b26; padding: 25px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #1e293b; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #94a3b8; font-size: 13px; }
+        input { width: 100%; padding: 12px; margin-bottom: 18px; border-radius: 8px; border: 1px solid #233044; background-color: #0b0f15; color: white; box-sizing: border-box; font-size: 14px; }
+        .status { text-align: center; font-weight: bold; color: #cbd5e1; margin-bottom: 20px; font-size: 14px; background: #16222f; padding: 10px; border-radius: 8px; }
+        .reward-badge { display: inline-block; background: #16222f; color: #3457dc; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 10px; border: 1px solid #3457dc; }
+        .burn-badge { color: #e43f5a; border-color: #e43f5a; }
+        .lang-switch { text-align: right; margin-bottom: 15px; }
+        .lang-btn { background: none; border: 1px solid #334155; color: #94a3b8; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 5px; }
+        .lang-btn.active { border-color: #3457dc; color: #fff; background: #1e3bb3; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLanguage('it')">🇮🇹 ITA</button>
+        <button class="lang-btn" onclick="setLanguage('en')">🇺🇸 ENG</button>
+    </div>
+
+    <h1>⚡ LiteMarket <span>V5</span></h1>
+    <div class="subtitle" id="sub-title">Proprietary LitVM Infrastructure • Complete Panel</div>
+    
+    <button id="connectBtn" class="btn btn-connect">🔗 Connect MetaMask Wallet</button>
+    <div id="walletStatus" class="status">Status: Disconnected</div>
+
+    <div class="section" style="border-color: #10b981;">
+        <h2 style="color: #10b981;" id="sec0-title">🛠️ Admin Mint Tools / Utility</h2>
+        <button id="mintNftBtn" class="btn btn-mint">➕ Mint 1 New NFT (Socio Collection)</button>
+    </div>
+
+    <div class="section">
+        <h2>🏷️ <span id="sec1-title">List Asset for Sale</span> <span class="reward-badge" style="color:#64748b; border-color:#64748b;">0 PTS</span></h2>
+        <label for="listNftAddress" id="label-list-address">NFT Contract Address:</label>
+        <input type="text" id="listNftAddress" value="0xAAaaC647A1733E880dBe39ECb3888554eA19AE35">
+        <label for="listTokenId" id="label-list-id">NFT Token ID:</label>
+        <input type="number" id="listTokenId" value="0">
+        <label for="listPrice" id="label-list-price">Price (in zkLTC):</label>
+        <input type="text" id="listPrice" value="0.005">
+        <button id="listBtn" class="btn">Confirm Listing</button>
+    </div>
+
+    <div class="section">
+        <h2>💰 <span id="sec2-title">Purchase Asset</span> <span class="reward-badge">+15 ITNOS_Buyer Reward</span></h2>
+        <label for="buyNftAddress" id="label-buy-address">NFT Contract Address:</label>
+        <input type="text" id="buyNftAddress" value="0xAAaaC647A1733E880dBe39ECb3888554eA19AE35">
+        <label for="buyTokenId" id="label-buy-id">NFT Token ID:</label>
+        <input type="number" id="buyTokenId" value="0">
+        <label for="buyPrice" id="label-buy-price">Price to Send (in zkLTC):</label>
+        <input type="text" id="buyPrice" value="0.005">
+        <button id="buyBtn" class="btn">Buy Now & Farm</button>
+    </div>
+
+    <div class="section" style="border-color: #e43f5a;">
+        <h2 style="color: #e43f5a;">🔥 <span id="sec3-title">NFT Incinerator</span> <span class="reward-badge burn-badge">+30 ITNOS Burn Reward</span></h2>
+        <p style="font-size: 12px; color: #94a3b8; margin-top: -5px; margin-bottom: 15px;" id="sec3-p">Destroy your custom NFT forever.</p>
+        <label for="burnTokenId" id="label-burn-id">NFT Token ID to Destroy:</label>
+        <input type="number" id="burnTokenId" value="0">
+        <button id="burnBtn" class="btn btn-burn">Burn NFT & Claim Points</button>
+    </div>
+</div>
+
+<script>
+    const tokenAddress = "0x1Cd8c91ce19464ACfBAF4e0CEB4b245Dce3372df";
+    const nftAddressDefault = "0xAAaaC647A1733E880dBe39ECb3888554eA19AE35";
+    const marketplaceAddress = "0x0941205bc0bF8eC88B7Fd0Dd886EC76D299C99C0"; 
+
+    const marketplaceABI = [
+        "function listNFT(address _nftContract, uint256 _tokenId, uint256 _price) external",
+        "function buyNFT(address _nftContract, uint256 _tokenId) external payable",
+        "function burnNFTForReward(uint256 _tokenId) external"
+    ];
+    
+    const erc721ABI = [
+        "function mintNFT(address to) public returns (uint256)",
+        "function approve(address to, uint256 tokenId) external"
+    ];
+
+    let provider, signer, marketplaceContract;
+    let currentLang = 'it';
+
+    const translations = {
+        it: {
+            sub: "Infrastruttura Proprietaria LitVM • Ecosistema Completo",
+            sec0: "🛠️ Utility di Stampa / Mint Tools",
+            sec0Btn: "➕ Stampa 1 Nuovo NFT (Socio Collection)",
+            sec1: "Metti in Vendita l'NFT",
+            lListAddress: "Indirizzo Contratto NFT:",
+            lListId: "ID dell'NFT da vendere:",
+            lListPrice: "Prezzo di vendita (in zkLTC):",
+            btnList: "Conferma Messa in Vendita",
+            sec2: "Acquista un NFT",
+            lBuyAddress: "Indirizzo Contratto NFT:",
+            lBuyId: "ID dell'NFT da comprare:",
+            lBuyPrice: "Prezzo da inviare (in zkLTC):",
+            btnBuy: "Compra Ora & Farm",
+            sec3: "NFT Incinerator (Approvazione Automatica)",
+            sec3p: "Distruggi il tuo NFT per alleggerire la supply e riscuotere i premi.",
+            lBurnId: "ID dell'NFT da distruggere:",
+            btnBurn: "Brucia NFT e Riscatta Punti",
+            conn: "Connetti Wallet MetaMask",
+            disc: "Stato: Disconnesso"
+        },
+        en: {
+            sub: "Proprietary LitVM Infrastructure • Complete Panel",
+            sec0: "🛠️ Admin Mint Tools / Utility",
+            sec0Btn: "➕ Mint 1 New NFT (Socio Collection)",
+            sec1: "List Asset for Sale",
+            lListAddress: "NFT Contract Address:",
+            lListId: "NFT Token ID:",
+            lListPrice: "Price (in zkLTC):",
+            btnList: "Confirm Listing",
+            sec2: "Purchase Asset",
+            lBuyAddress: "NFT Contract Address:",
+            lBuyId: "NFT Token ID:",
+            lBuyPrice: "Price to Send (in zkLTC):",
+            btnBuy: "Buy Now & Farm",
+            sec3: "NFT Incinerator",
+            sec3p: "Destroy your custom NFT forever to clear supply and claim maximum points.",
+            lBurnId: "NFT Token ID to Destroy:",
+            btnBurn: "Burn NFT & Claim Points",
+            conn: "Connect MetaMask Wallet",
+            disc: "Status: Disconnected"
+        }
+    };
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        if(window.event && window.event.target) { window.event.target.classList.add('active'); }
+        
+        document.getElementById('sub-title').innerText = translations[lang].sub;
+        document.getElementById('sec0-title').innerText = translations[lang].sec0;
+        document.getElementById('mintNftBtn').innerText = translations[lang].sec0Btn;
+        document.getElementById('sec1-title').innerText = translations[lang].sec1;
+        document.getElementById('label-list-address').innerText = translations[lang].lListAddress;
+        document.getElementById('label-list-id').innerText = translations[lang].lListId;
+        document.getElementById('label-list-price').innerText = translations[lang].lListPrice;
+        document.getElementById('listBtn').innerText = translations[lang].btnList;
+        document.getElementById('sec2-title').innerText = translations[lang].sec2;
+        document.getElementById('label-buy-address').innerText = translations[lang].lBuyAddress;
+        document.getElementById('label-buy-id').innerText = translations[lang].lBuyId;
+        document.getElementById('label-buy-price').innerText = translations[lang].lBuyPrice;
+        document.getElementById('buyBtn').innerText = translations[lang].btnBuy;
+        document.getElementById('sec3-title').innerText = translations[lang].sec3;
+        document.getElementById('sec3-p').innerText = translations[lang].sec3p;
+        document.getElementById('label-burn-id').innerText = translations[lang].lBurnId;
+        document.getElementById('burnBtn').innerText = translations[lang].btnBurn;
+    }
+
+    async function connectWallet() {
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                document.getElementById('walletStatus').innerText = (currentLang === 'it' ? "Connesso: " : "Connected: ") + accounts[0];
+                document.getElementById('walletStatus').style.color = "#10b981";
+                document.getElementById('connectBtn').innerText = "Wallet Linked ✔";
+                
+                provider = new ethers.BrowserProvider(window.ethereum);
+                signer = await provider.getSigner();
+                
+                marketplaceContract = new ethers.Contract(marketplaceAddress, marketplaceABI, signer);
+            } catch (error) { alert("Error: " + error.message); }
+        } else { alert("MetaMask missing!"); }
+    }
+
+    async function quickMintNFT() {
+        if (!signer) return alert("Connect wallet first!");
+        try {
+            const userAddress = await signer.getAddress();
+            alert(currentLang === 'it' ? "Stampa dell'NFT in corso..." : "Minting your custom NFT...");
+            const nativeNftContract = new ethers.Contract(nftAddressDefault, erc721ABI, signer);
+            const tx = await nativeNftContract.mintNFT(userAddress);
+            await tx.wait();
+            alert("Success! NFT Ready.");
+        } catch (error) { alert("Mint failed: " + error.message); }
+    }
+
+    async function listNFT() {
+        if (!marketplaceContract) return alert("Connect wallet first!");
+        const targetNftAddress = document.getElementById('listNftAddress').value;
+        const tokenId = document.getElementById('listTokenId').value;
+        const price = document.getElementById('listPrice').value;
+        if (!targetNftAddress || !tokenId || !price) return alert("Missing fields!");
+
+        try {
+            const priceInWei = ethers.parseEther(price);
+            const targetNftContract = new ethers.Contract(targetNftAddress, erc721ABI, signer);
+
+            alert(currentLang === 'it' ? "[1/2] Approvazione NFT per la vendita..." : "[1/2] Approving NFT for listing...");
+            const txApprove = await targetNftContract.approve(marketplaceAddress, tokenId);
+            await txApprove.wait();
+
+            alert(currentLang === 'it' ? "[2/2] Pubblicazione sul Marketplace..." : "[2/2] Publishing listing...");
+            const tx = await marketplaceContract.listNFT(targetNftAddress, tokenId, priceInWei);
+            await tx.wait();
+            alert(currentLang === 'it' ? "NFT messo in vendita!" : "NFT listed successfully!");
+        } catch (error) { alert("Error: " + error.message); }
+    }
+
+    async function buyNFT() {
+        if (!marketplaceContract) return alert("Connect wallet first!");
+        const targetNftAddress = document.getElementById('buyNftAddress').value;
+        const tokenId = document.getElementById('buyTokenId').value;
+        const price = document.getElementById('buyPrice').value;
+        if (!targetNftAddress || !tokenId || !price) return alert("Missing fields!");
+
+        try {
+            const priceInWei = ethers.parseEther(price);
+            alert(currentLang === 'it' ? "Acquisto in corso e distribuzione ricompense..." : "Processing purchase...");
+            const tx = await marketplaceContract.buyNFT(targetNftAddress, tokenId, { value: priceInWei });
+            await tx.wait();
+            alert(currentLang === 'it' ? "Acquisto completato! Premi accreditati." : "NFT purchased! Rewards distributed.");
+        } catch (error) { alert("Error: " + error.message); }
+    }
+
+    async function burnNFT() {
+        if (!marketplaceContract) return alert("Connect wallet first!");
+        const tokenId = document.getElementById('burnTokenId').value;
+        if (tokenId === "") return alert("Specify ID!");
+
+        try {
+            const nativeNftContract = new ethers.Contract(nftAddressDefault, erc721ABI, signer);
+            alert(currentLang === 'it' ? "[1/2] Approvazione sacrificio NFT..." : "[1/2] Approving NFT sacrifice...");
+            const txApprove = await nativeNftContract.approve(marketplaceAddress, tokenId);
+            await txApprove.wait();
+
+            alert(currentLang === 'it' ? "[2/2] Incenerimento in corso..." : "[2/2] Burning NFT...");
+            const tx = await marketplaceContract.burnNFTForReward(tokenId);
+            await tx.wait();
+            alert("💥 EUREKA! Burn OK! +30 ITNOS");
+        } catch (error) { alert("Error: " + (error.reason || error.message)); }
+    }
+
+    document.getElementById('connectBtn').addEventListener('click', connectWallet);
+    document.getElementById('mintNftBtn').addEventListener('click', quickMintNFT);
+    document.getElementById('listBtn').addEventListener('click', listNFT);
+    document.getElementById('buyBtn').addEventListener('click', buyNFT);
+    document.getElementById('burnBtn').addEventListener('click', burnNFT);
+    
+    setLanguage('it');
+</script>
+</body>
+</html>
